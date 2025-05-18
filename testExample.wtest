@@ -1,9 +1,53 @@
-import example.pepita
+import mensajeros.*
+import destinos.*
+import empresaDeMensajeria.*
 
-describe "group of tests for pepita" {
+describe "test mensajeros" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  test "roberto puede llevar un paquete que tiene un acoplado" {
+    roberto.vehiculoActual(camion)
+    roberto.vehiculoActual().cantidadDeAcoplados(1)
+    assert.that(roberto.vehiculoActual().cantidadDeAcoplados() >= 1 )
+    paquete.pagado(50)
+    assert.that(paquete.puedeEntregar(roberto,brooklyn))
   }
+
+  test "neo con credito no puede llevar un paquete que no esta pago" {
+    assert.notThat(paquete.puedeEntregar(neo,matrix))
+  }
+
+  test"contratar Mensajero" {
+    empresaDeMensajeria.contratarMensajero(neo)
+    assert.that(empresaDeMensajeria.mensajeros().size() > 0)
+  }
+
+  test"despedir Mensajero" {
+    empresaDeMensajeria.contratarMensajero(neo)
+    empresaDeMensajeria.despedirMensajero(neo)
+    assert.that(empresaDeMensajeria.mensajeros().size() == 0)
+  }
+
+  test"despedir a todos los mensajeros" {
+    empresaDeMensajeria.contratarMensajero(neo)
+    empresaDeMensajeria.contratarMensajero(chuckNorris)
+    empresaDeMensajeria.contratarMensajero(roberto)
+    empresaDeMensajeria.despedirTodosLosMensajeros()
+    assert.that(empresaDeMensajeria.mensajeros().size() == 0)
+  }
+
+  test "la mensajeria es grande" {
+    empresaDeMensajeria.contratarMensajero(chuckNorris)
+    empresaDeMensajeria.contratarMensajero(roberto)
+    empresaDeMensajeria.contratarMensajero(neo)
+    assert.that(empresaDeMensajeria.mensajeriaEsGrande())    
+}
+
+  test "saber el peso del ultimo mensajero" {
+    empresaDeMensajeria.contratarMensajero(roberto)
+    empresaDeMensajeria.contratarMensajero(chuckNorris)
+    assert.that(empresaDeMensajeria.pesoDelUltimoMensajero() == 80)    
+}
+
+
 
 }
